@@ -7,41 +7,61 @@ const DOWN_CUTOFF = window.innerHeight - window.innerHeight / 4;
 let startLookTime = Number.POSITIVE_INFINITY;
 let lookDirection = null;
 
+let currentlyScrolling = false;
+
+function scrollByAmount(amount, behavior = "smooth") {
+  if (currentlyScrolling) {
+    // Don't perform a scroll if a scroll operation is already in progress.
+    return;
+  }
+
+  currentlyScrolling = true;
+
+  // Scroll the window by the specified amount
+  window.scrollBy({
+    top: amount,
+    behavior: behavior,
+  });
+
+  // After scrolling is complete, set currentlyScrolling to false
+  setTimeout(() => {
+    currentlyScrolling = false;
+  }, 200); // Adjust the time as needed to match your scroll duration
+}
 webgazer
   .setGazeListener((data, timestamp) => {
     if (data == null || lookDirection === "STOP") return;
 
-    if (data.y < UP_CUTOFF && lookDirection !== "UP" && lookDirection !== "RESET") {
+    if (data.y < UP_CUTOFF) {
       startLookTime = timestamp;
-      lookDirection = "UP"; // When looking up, we want to scroll up
-    } else if (data.y > DOWN_CUTOFF && lookDirection !== "DOWN" && lookDirection !== "RESET") {
+      // lookDirection = "UP"; // When looking up, we want to scroll up
+      scrollByAmount(-100, "smooth");
+      // window.scrollBy({
+      //   top: -30,
+      //   behavior: "smooth",
+      // });
+          // Delay for 0.2 seconds (200 milliseconds)
+    // setTimeout(function() {
+    //   // Your code after the delay
+    //   canscroll=true;
+    // }, 2000);
+    } else if (data.y > DOWN_CUTOFF) {
       startLookTime = timestamp;
-      lookDirection = "DOWN"; // When looking down, we want to scroll down
+      // lookDirection = "DOWN"; // When looking down, we want to scroll down
+      scrollByAmount(100, "smooth");
+      // window.scrollBy({
+      //   top: 30,
+      //   behavior: "smooth",
+      // });
+      // setTimeout(function() {
+      //   // Your code after the delay
+      //   canscroll=true;
+      // }, 2000);
     } else if (data.y >= UP_CUTOFF && data.y <= DOWN_CUTOFF) {
-      startLookTime = Number.POSITIVE_INFINITY;
+      // startLookTime = Number.POSITIVE_INFINITY;
       lookDirection = null;
-    }
-
-    if (startLookTime + LOOK_DELAY < timestamp) {
-      if (lookDirection === "UP") {
-        window.scrollBy({
-          top: -300,
-          behavior: "smooth",
-        });
-      } else {
-        window.scrollBy({
-          top: 300,
-          behavior: "smooth",
-        }); // Scroll down by 100 pixels
-      }
-
-      startLookTime = Number.POSITIVE_INFINITY;
-      lookDirection = "STOP";
-      setTimeout(() => {
-        lookDirection = "RESET";
-      }, 200);
     }
   })
   .begin();
 
-webgazer.showVideoPreview(true).showPredictionPoints(false); // Display video preview
+webgazer.showVideoPreview(true).showPredictionPoints(true); // Display video preview

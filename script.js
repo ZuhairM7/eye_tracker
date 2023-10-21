@@ -24,9 +24,15 @@ webgazer
 
     if (startLookTime + LOOK_DELAY < timestamp) {
       if (lookDirection === "UP") {
-        window.scrollBy(0, -200); // Scroll up by 100 pixels
+        window.scrollBy({
+          top: -300,
+          behavior: "smooth",
+        });
       } else {
-        window.scrollBy(0, 200); // Scroll down by 100 pixels
+        window.scrollBy({
+          top: 300,
+          behavior: "smooth",
+        }); // Scroll down by 100 pixels
       }
 
       startLookTime = Number.POSITIVE_INFINITY;

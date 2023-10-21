@@ -1,8 +1,8 @@
-window.saveDataAcrossSessions = true;
+window.saveDataAcrossSessions = false;
 
 const LOOK_DELAY = 100; // 1 second
-const UP_CUTOFF = window.innerHeight / 4;
-const DOWN_CUTOFF = window.innerHeight - window.innerHeight / 4;
+const UP_CUTOFF = window.innerHeight / 6;
+const DOWN_CUTOFF = window.innerHeight - window.innerHeight / 6;
 
 let startLookTime = Number.POSITIVE_INFINITY;
 let lookDirection = null;
@@ -11,7 +11,6 @@ let currentlyScrolling = false;
 
 function scrollByAmount(amount, behavior = "smooth") {
   if (currentlyScrolling) {
-    // Don't perform a scroll if a scroll operation is already in progress.
     return;
   }
 
@@ -26,7 +25,7 @@ function scrollByAmount(amount, behavior = "smooth") {
   // After scrolling is complete, set currentlyScrolling to false
   setTimeout(() => {
     currentlyScrolling = false;
-  }, 200); // Adjust the time as needed to match your scroll duration
+  }, 10); // Adjust the time as needed to match your scroll duration
 }
 webgazer
   .setGazeListener((data, timestamp) => {
@@ -34,34 +33,11 @@ webgazer
 
     if (data.y < UP_CUTOFF) {
       startLookTime = timestamp;
-      // lookDirection = "UP"; // When looking up, we want to scroll up
-      scrollByAmount(-100, "smooth");
-      // window.scrollBy({
-      //   top: -30,
-      //   behavior: "smooth",
-      // });
-          // Delay for 0.2 seconds (200 milliseconds)
-    // setTimeout(function() {
-    //   // Your code after the delay
-    //   canscroll=true;
-    // }, 2000);
+      scrollByAmount(-5, "smooth");
     } else if (data.y > DOWN_CUTOFF) {
       startLookTime = timestamp;
-      // lookDirection = "DOWN"; // When looking down, we want to scroll down
-      scrollByAmount(100, "smooth");
-      // window.scrollBy({
-      //   top: 30,
-      //   behavior: "smooth",
-      // });
-      // setTimeout(function() {
-      //   // Your code after the delay
-      //   canscroll=true;
-      // }, 2000);
-    } else if (data.y >= UP_CUTOFF && data.y <= DOWN_CUTOFF) {
-      // startLookTime = Number.POSITIVE_INFINITY;
-      lookDirection = null;
+      scrollByAmount(5, "smooth");
     }
-  })
-  .begin();
+  }).begin();
 
 webgazer.showVideoPreview(true).showPredictionPoints(true); // Display video preview

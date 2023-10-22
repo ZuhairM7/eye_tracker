@@ -1,10 +1,13 @@
-window.saveDataAcrossSessions = true;
+window.saveDataAcrossSessions = false;
 
-const LOCK_TIME = 20; // 1 second
-const UP_CUTOFF = window.innerHeight / 5;
-const DOWN_CUTOFF = window.innerHeight - window.innerHeight / 5;
+let LOCK_TIME = 200; // 1 second
+const UP_CUTOFF = window.innerHeight / 4;
+const DOWN_CUTOFF = window.innerHeight - window.innerHeight / 4;
+const MAX_SPEED = 150;
+const MIN_SPEED = 12;
+const MIN_LOCK_TIME = 20;
+const MAX_LOCK_TIME = 150;
 
-let startLookTime = Number.POSITIVE_INFINITY;
 let lookDirection = null;
 
 let currentlyScrolling = false;
@@ -29,14 +32,18 @@ function scrollByAmount(amount, behavior = "smooth") {
 }
 webgazer
   .setGazeListener((data, timestamp) => {
-    if (data == null || lookDirection === "STOP") return;
+    if (data == null) return;
 
     if (data.y < UP_CUTOFF) {
-      startLookTime = timestamp;
-      scrollByAmount(-50, "smooth");
+      let percentage = 1 - data.y / UP_CUTOFF;
+      let scroll_amount = (MAX_SPEED - MIN_SPEED) * percentage + MIN_SPEED;
+      LOCK_TIME = (MAX_LOCK_TIME - MIN_LOCK_TIME) * percentage + MIN_LOCK_TIME;
+      scrollByAmount(-1 * scroll_amount, "smooth");
     } else if (data.y > DOWN_CUTOFF) {
-      startLookTime = timestamp;
-      scrollByAmount(50, "smooth");
+      let percentage = (data.y - DOWN_CUTOFF) / (window.innerHeight - DOWN_CUTOFF);
+      let scroll_amount = (MAX_SPEED - MIN_SPEED) * percentage + MIN_SPEED;
+      LOCK_TIME = (MAX_LOCK_TIME - MIN_LOCK_TIME) * percentage + MIN_LOCK_TIME;
+      scrollByAmount(scroll_amount, "smooth");
     }
   }).begin();
 

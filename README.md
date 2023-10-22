@@ -1,6 +1,8 @@
 # eye_tracker
 
 check our project out here: https://zuhairm7.github.io/eye_tracker/
+<img width="500" alt="image" src="https://github.com/ZuhairM7/eye_tracker/assets/19733435/2a079556-9582-4bfb-a5b3-14930230a524">
+
 
 **Project Inspiration:**
 Our project was inspired by a desire to enhance web accessibility for individuals with physical disabilities, as well as to address critical environments where traditional hardware interaction might pose health risks, such as in the presence of contagious biospecimens. Additionally, we aimed to provide a solution for the general public seeking a more convenient web browsing experience.

@@ -1,8 +1,8 @@
-window.saveDataAcrossSessions = false;
+window.saveDataAcrossSessions = true;
 
 const LOOK_DELAY = 100; // 1 second
-const UP_CUTOFF = window.innerHeight / 6;
-const DOWN_CUTOFF = window.innerHeight - window.innerHeight / 6;
+const UP_CUTOFF = window.innerHeight / 5;
+const DOWN_CUTOFF = window.innerHeight - window.innerHeight / 5;
 
 let startLookTime = Number.POSITIVE_INFINITY;
 let lookDirection = null;
@@ -25,7 +25,7 @@ function scrollByAmount(amount, behavior = "smooth") {
   // After scrolling is complete, set currentlyScrolling to false
   setTimeout(() => {
     currentlyScrolling = false;
-  }, 10); // Adjust the time as needed to match your scroll duration
+  }, LOOK_DELAY); // Adjust the time as needed to match your scroll duration
 }
 webgazer
   .setGazeListener((data, timestamp) => {
@@ -33,10 +33,10 @@ webgazer
 
     if (data.y < UP_CUTOFF) {
       startLookTime = timestamp;
-      scrollByAmount(-5, "smooth");
+      scrollByAmount(-8, "smooth");
     } else if (data.y > DOWN_CUTOFF) {
       startLookTime = timestamp;
-      scrollByAmount(5, "smooth");
+      scrollByAmount(8, "smooth");
     }
   }).begin();
 

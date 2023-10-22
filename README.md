@@ -1,6 +1,7 @@
 # eye_tracker
 
 check our project out here: https://zuhairm7.github.io/eye_tracker/
+
 <img width="500" alt="image" src="https://github.com/ZuhairM7/eye_tracker/assets/19733435/2a079556-9582-4bfb-a5b3-14930230a524">
 
 

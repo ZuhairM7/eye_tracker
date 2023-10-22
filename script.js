@@ -7,13 +7,15 @@ const MAX_SPEED = 150;
 const MIN_SPEED = 12;
 const MIN_LOCK_TIME = 20;
 const MAX_LOCK_TIME = 150;
+let calibration_mode = true;
 
 let lookDirection = null;
 
 let currentlyScrolling = false;
 
 function scrollByAmount(amount, behavior = "smooth") {
-  if (currentlyScrolling) {
+  
+  if (currentlyScrolling || calibration_mode) {
     return;
   }
 
@@ -30,7 +32,13 @@ function scrollByAmount(amount, behavior = "smooth") {
     currentlyScrolling = false;
   }, LOCK_TIME); // Adjust the time as needed to match your scroll duration
 }
-webgazer
+
+setTimeout(() => {
+  calibration_mode = false;
+  window.alert("Calibration is over. You can now scroll with your eyes.");
+}, 20000);
+
+  webgazer
   .setGazeListener((data, timestamp) => {
     if (data == null) return;
 
